@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "service-mongodb"
+version = "0.1.0"
+description = ""
+authors = ["extittivns03 <Changhui.Zhang.EXT@desaysv.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+python-multipart = "^0.0.6"
+python-jose = {extras = ["cryptography"], version = "^3.3.0"}
+casbin = "^1.21.0"
+motor = "^3.2.0"
+fastapi = "^0.101.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
