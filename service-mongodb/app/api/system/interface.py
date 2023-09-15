@@ -1,8 +1,10 @@
 from datetime import datetime, timezone
+
 import pymongo
 from bson import ObjectId
 from fastapi import APIRouter, Depends, Query
 from fastapi.encoders import jsonable_encoder
+
 from app.models.system.interface import SearchInterface, Interface
 from app.models.system.role import Role
 from app.models.system.user import User
@@ -23,7 +25,9 @@ async def all(
 ):
     coll = db_engine[Interface.Config.name]
 
-    cursor = coll.find({}).sort([
+    query = {}
+
+    cursor = coll.find(query).sort([
         ('group', pymongo.ASCENDING),
     ])
     try:
@@ -40,10 +44,12 @@ async def lists(
         group: str = None,
         title: str = None,
         method: str = None,
-        create_at: list[datetime] = Query(None),
-        update_at: list[datetime] = Query(None),
-        current_page: int = 1,  # 跳过
-        page_size: int = 10,  # 跳过
+        start_create_at: datetime | None = Query(None, alias='startCreateTime'),
+        end_create_at: datetime | None = Query(None, alias='endCreateTime'),
+        start_update_at: datetime = Query(None, alias='startUpdateTime'),
+        end_update_at: datetime = Query(None, alias='endUpdateTime'),
+        current_page: int = Query(1, alias='current'),
+        page_size: int = Query(10, alias='pageSize'),
         db_engine=Depends(async_db_engine),
         _: User = Depends(auto_current_user_permission),
 ):
@@ -61,12 +67,12 @@ async def lists(
 
     if uid:
         query['_id'] = ObjectId(uid)
-    if update_at:
-        query['update_at'] = {'$gte': update_at[0].astimezone(timezone.utc),
-                              '$lte': update_at[1].astimezone(timezone.utc)}
-    if create_at:
-        query['create_at'] = {'$gte': create_at[0].astimezone(timezone.utc),
-                              '$lte': create_at[1].astimezone(timezone.utc)}
+    if start_update_at and end_update_at:
+        query['update_at'] = {'$gte': start_update_at.astimezone(timezone.utc),
+                              '$lte': end_update_at.astimezone(timezone.utc)}
+    if start_create_at and end_create_at:
+        query['create_at'] = {'$gte': start_create_at.astimezone(timezone.utc),
+                              '$lte': end_create_at.astimezone(timezone.utc)}
 
     cursor = coll.find(query).skip(skip).limit(page_size).sort([
         ('group', pymongo.ASCENDING),

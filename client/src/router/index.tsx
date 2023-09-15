@@ -1,8 +1,7 @@
-import type { FC, LazyExoticComponent } from 'react';
-import { Suspense, lazy } from 'react';
-import type { RouteObject } from 'react-router-dom';
-import { createBrowserRouter } from 'react-router-dom';
-import { Navigate } from "react-router-dom"
+import type {FC, LazyExoticComponent} from 'react';
+import {lazy, Suspense} from 'react';
+import type {RouteObject} from 'react-router-dom';
+import {createBrowserRouter, Navigate} from 'react-router-dom';
 
 
 import Auth from './auth';
@@ -17,13 +16,14 @@ const users = lazy(() => import('@/pages/admin/system/users'));
 const role = lazy(() => import('@/pages/admin/system/role'));
 const menu = lazy(() => import('@/pages/admin/system/menu'));
 const interfaces = lazy(() => import('@/pages/admin/system/interface'));
-const lazyLoad = (Component: LazyExoticComponent<FC>) => {
+
+function lazyLoad(Component: LazyExoticComponent<FC>) {
     return (
-      <Suspense fallback={<Loading />}>
-        <Component />
-      </Suspense>
+        <Suspense fallback={<Loading/>}>
+            <Component/>
+        </Suspense>
     );
-  };
+}
 
 const routes: RouteObject[] = [
     {
@@ -32,16 +32,16 @@ const routes: RouteObject[] = [
     },
     {
         path: '/',
-        element: <Navigate to="/admin/welcome" />,
+        element: <Navigate to="/admin/welcome"/>,
     },
     {
         path: '/',
-        element: <Auth>{<AdminLayout />}</Auth>,
+        element: <Auth>{<AdminLayout/>}</Auth>,
         children: [
             {
                 path: '/admin/welcome',
-                element:lazyLoad(welcome) ,
-              },
+                element: lazyLoad(welcome),
+            },
             {
                 path: '/admin/system/users',
                 element: lazyLoad(users),
@@ -59,7 +59,7 @@ const routes: RouteObject[] = [
                 element: lazyLoad(interfaces),
             }
         ]
-      },    
+    },
 ]
 
 const router = createBrowserRouter(routes);

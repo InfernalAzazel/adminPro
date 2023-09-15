@@ -11,8 +11,8 @@ class SearchRole(BaseModel):
 class Role(SearchRole):
     uid: PyObjectId | None = Field(None, validation_alias=AliasChoices('_id',  'uid'))
     describe: str | None = None
-    menu_permission: List[Dict] | None = []
-    interface_permission: List[Dict] | None = []
+    menu_permission: List[str] | None = []
+    interface_permission: List[str] | None = []
     create_at: datetime | None = Field(default_factory=datetime.utcnow)  # 创建时间
     update_at: datetime | None = Field(default_factory=datetime.utcnow)  # 更新时间
 

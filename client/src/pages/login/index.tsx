@@ -13,6 +13,7 @@ import {
 } from '@ant-design/pro-components';
 import { Space } from 'antd';
 import type { CSSProperties } from 'react';
+import  { useEffect } from 'react';
 import {useNavigate } from 'react-router-dom';
 import {useAppState} from '@/hooks'
 import { useLogin} from '@/services';
@@ -27,17 +28,20 @@ const iconStyles: CSSProperties = {
 };
 
 
-export default () => {
-  const login = useLogin()
+export default function LoginPage() {
+  const {data, run} = useLogin({manual: true})
   const navigate = useNavigate();
   const [,setAppState] = useAppState()
-  const onSubmit = async (values: any) => {
-    const result = await login.mutateAsync(values)
-    if(result){
-      setAppState({access_token: result.access_token})
-      navigate('/')
-      console.log('login', result);
+
+  useEffect(() => {
+    if (data && data.access_token) {
+      setAppState({ access_token: data.access_token });
+      navigate('/');
     }
+  }, [data]);
+
+  async function onSubmit (values: any){
+    run(values)
   }
   return (
     <ProConfigProvider hashed={false}>
@@ -106,4 +110,4 @@ export default () => {
       </div>
     </ProConfigProvider>
   );
-};
+}

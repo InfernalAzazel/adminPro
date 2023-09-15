@@ -31,10 +31,12 @@ async def all(
 async def lists(
         uid: str = None,
         name: str = None,
-        create_at: list[datetime] = Query(None),
-        update_at: list[datetime] = Query(None),
-        current_page: int = 1,  # 跳过
-        page_size: int = 10,  # 跳过
+        start_create_at: datetime | None = Query(None, alias='startCreateTime'),
+        end_create_at: datetime | None = Query(None, alias='endCreateTime'),
+        start_update_at: datetime = Query(None, alias='startUpdateTime'),
+        end_update_at: datetime = Query(None, alias='endUpdateTime'),
+        current_page: int = Query(1, alias='current'),
+        page_size: int = Query(10, alias='pageSize'),
         db_engine=Depends(async_db_engine),
         _: User = Depends(auto_current_user_permission),
 ):
@@ -43,20 +45,18 @@ async def lists(
     coll = db_engine[Role.Config.name]
 
     search_role = SearchRole(name=name)
+
     query = search_role.model_dump(exclude_none=True)
 
     if uid:
         query['_id'] = ObjectId(uid)
-    if update_at:
-        query['update_at'] = {
-            '$gte': update_at[0].astimezone(timezone.utc),
-            '$lte': update_at[1].astimezone(timezone.utc)
-        }
-    if create_at:
-        query['create_at'] = {
-            '$gte': create_at[0].astimezone(timezone.utc),
-            '$lte': create_at[1].astimezone(timezone.utc)
-        }
+
+    if start_update_at and end_update_at:
+        query['update_at'] = {'$gte': start_update_at.astimezone(timezone.utc),
+                              '$lte': end_update_at.astimezone(timezone.utc)}
+    if start_create_at and end_create_at:
+        query['create_at'] = {'$gte': start_create_at.astimezone(timezone.utc),
+                              '$lte': end_create_at.astimezone(timezone.utc)}
 
     cursor = coll.find(query).skip(skip).limit(page_size)
     count = await coll.count_documents(query)
@@ -75,8 +75,8 @@ async def add(
         _: User = Depends(auto_current_user_permission),
 ):
     coll = db_engine[Role.Config.name]
-    count = await coll.count_documents({'_id': ObjectId(role.uid)})
-    if count == 1:
+    count = await coll.count_documents({'name': role.name})
+    if count > 0:
         return ResponseMessages(status_code=StatusCode.role_add_failed)
     await coll.insert_one(role.model_dump())
     return ResponseMessages(status_code=StatusCode.role_add_successfully)
@@ -90,8 +90,8 @@ async def edit(
 ):
     coll = db_engine[Role.Config.name]
     doc = await coll.find_one({'_id': ObjectId(role.uid)})
-    print(role.model_dump())
-    if(not doc):
+
+    if not doc:
         return ResponseMessages(status_code=StatusCode.role_modify_failed)
     role.update_at = datetime.utcnow()
     await coll.find_one_and_update(

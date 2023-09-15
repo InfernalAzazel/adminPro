@@ -1,11 +1,13 @@
 import { UserConfigExport, ConfigEnv, defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'node:path';
+import UnoCSS from 'unocss/vite'
 import mockDevServerPlugin from 'vite-plugin-mock-dev-server'
 
 // https://vitejs.dev/config/
 export default ({ command }: ConfigEnv): UserConfigExport => defineConfig({
   plugins: [
+    UnoCSS(),
     react(),
     //mockDevServerPlugin(),
   ],

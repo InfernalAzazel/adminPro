@@ -1,8 +1,12 @@
 from datetime import datetime
 from datetime import timezone
+
+import pymongo
 from bson import ObjectId
 from fastapi import APIRouter, Depends, Query
 from fastapi.encoders import jsonable_encoder
+
+from app.models.system.menu import Menu
 from app.models.system.role import Role
 from app.models.system.user import User, SearchUser
 from app.utils.custom_response import ResponseMessages, StatusCode
@@ -16,31 +20,44 @@ router = APIRouter(
 )
 
 
-@router.get('/v1/users/account')
+@router.get('/v1/system/users/account')
 async def account(
         current_user: User = Depends(auto_current_user_permission),
 ):
     return ResponseMessages(data=current_user)
 
 
-@router.get('/v1/users/routes')
+@router.get('/v1/system/users/routes')
 async def routers(
         current_user: User = Depends(auto_current_user_permission),
         db_engine=Depends(async_db_engine)
 ):
-    doc = await db_engine[Role.Config.name].find_one({'name': current_user.role_name})
+    coll = db_engine[Role.Config.name]
+    doc = await coll.find_one({'name': current_user.role_name})
     if not doc:
         ResponseMessages(status_code=StatusCode.role_get_failed)
 
     role = Role(**doc)
+    coll = db_engine[Menu.Config.name]
+
+    obj_ids = [ObjectId(uid) for uid in role.menu_permission]
+    query = {'_id': {'$in': obj_ids}}
+
+    cursor = coll.find(query).sort([
+        ('order', pymongo.ASCENDING),
+    ])
+
+    try:
+        data = [Menu(**x).model_dump() async for x in cursor]
+    except Exception as _:
+        data = []
 
     # 拼接菜单路由
-    menu_permission = list_to_tree(jsonable_encoder(role.menu_permission), 0, is_add_redirect=True)
-    content = jsonable_encoder(menu_permission)
-    return ResponseMessages(data=content)
+    menu_permission = list_to_tree(jsonable_encoder(data), 0, is_add_redirect=True)
+    return ResponseMessages(data=menu_permission)
 
 
-@router.get('/v1/users/list')
+@router.get('/v1/system/users/list')
 async def lists(
         uid: str = None,
         username: str = None,
@@ -50,10 +67,12 @@ async def lists(
         department: str = None,
         disabled: bool = None,
         role_name: str = None,
-        create_at: list[datetime] = Query(None),
-        update_at: list[datetime] = Query(None),
-        current_page: int = 1,  # 跳过
-        page_size: int = 10,  # 跳过
+        start_create_at: datetime | None = Query(None, alias='startCreateTime'),
+        end_create_at: datetime | None = Query(None, alias='endCreateTime'),
+        start_update_at: datetime = Query(None, alias='startUpdateTime'),
+        end_update_at: datetime = Query(None, alias='endUpdateTime'),
+        current_page: int = Query(1, alias='current'),
+        page_size: int = Query(10, alias='pageSize'),
         db_engine=Depends(async_db_engine),
         _: User = Depends(auto_current_user_permission)
 
@@ -73,16 +92,16 @@ async def lists(
     )
 
     query = search_user.model_dump(exclude_none=True)
-    print(query)
+
     if uid:
         query['_id'] = ObjectId(uid)
-    if update_at:
-        query['update_at'] = {'$gte': update_at[0].astimezone(timezone.utc),
-                              '$lte': update_at[1].astimezone(timezone.utc)}
-    if create_at:
-        query['create_at'] = {'$gte': create_at[0].astimezone(timezone.utc),
-                              '$lte': create_at[1].astimezone(timezone.utc)}
-        
+    if start_update_at and end_update_at:
+        query['update_at'] = {'$gte': start_update_at.astimezone(timezone.utc),
+                              '$lte': end_update_at.astimezone(timezone.utc)}
+    if start_create_at and end_create_at:
+        query['create_at'] = {'$gte': start_create_at.astimezone(timezone.utc),
+                              '$lte': end_create_at.astimezone(timezone.utc)}
+
     cursor = coll.find(query).skip(skip).limit(page_size)
     count = await coll.count_documents(query)
     try:
@@ -92,7 +111,7 @@ async def lists(
     return ResponseMessages(data=data, field_value={'total': count})
 
 
-@router.post('/v1/users/add')
+@router.post('/v1/system/users/add')
 async def add(
         user: User,
         db_engine=Depends(async_db_engine),
@@ -108,7 +127,7 @@ async def add(
     return ResponseMessages(status_code=StatusCode.user_add_successfully)
 
 
-@router.put('/v1/users/edit')
+@router.put('/v1/system/users/edit')
 async def edit(
         user: User,
         db_engine=Depends(async_db_engine),
@@ -124,7 +143,7 @@ async def edit(
     return ResponseMessages(status_code=StatusCode.user_modify_successfully)
 
 
-@router.delete('/v1/users/delete')
+@router.delete('/v1/system/users/delete')
 async def delete(
         uid: str,
         db_engine=Depends(async_db_engine),

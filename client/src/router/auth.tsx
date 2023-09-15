@@ -5,8 +5,7 @@ import {useAppState} from "@/hooks";
 
 function Auth ({ children }: {children: ReactNode}) {
     const [appValue] = useAppState();
-    let isToken = appValue.access_token
-    console.log('isToken', isToken)
+    const isToken = appValue.access_token
     // 判断有没有token
     if (isToken) {
         //token存在正常渲染

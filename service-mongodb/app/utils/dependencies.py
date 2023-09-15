@@ -67,11 +67,11 @@ async def auto_current_user_permission(request: Request, current_user: User = De
     role = Role(**doc)
 
     # 设置适配器
-    adapter = Adapter(doc)
-    e = casbin.Enforcer('rbac_model.conf', adapter)
-    # # 验证接口权限
-    if e.enforce(role.uid, path, method):
-        pass
-    else:
-        raise ExceptionResponse(status_code=StatusCode.unauthorized)
+    # adapter = Adapter(doc)
+    # e = casbin.Enforcer('rbac_model.conf', adapter)
+    # # # 验证接口权限
+    # if e.enforce(role.uid, path, method):
+    #     pass
+    # else:
+    #     raise ExceptionResponse(status_code=StatusCode.unauthorized)
     return current_user

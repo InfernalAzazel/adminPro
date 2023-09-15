@@ -3,11 +3,11 @@
     "_id":{
       "$oid":"62cd16f41db5004e1234d3d8"
     },
-    "path":"/api/v1/users/account",
+    "path":"/api/v1/system/users/account",
     "group":"users",
     "method":"GET",
     "update_at":{
-      "$date":"2022-07-29T16:00:26.893+0800"
+      "$date":"2023-09-14T15:37:42.643+0800"
     },
     "create_at":{
       "$date":"2022-07-29T16:00:26.893+0800"
@@ -18,11 +18,11 @@
     "_id":{
       "$oid":"62da56201f5a9496cdb1e9e8"
     },
-    "path":"/api/v1/users/routes",
+    "path":"/api/v1/system/users/routes",
     "group":"users",
     "method":"GET",
     "update_at":{
-      "$date":"2022-07-29T16:00:20.953+0800"
+      "$date":"2023-09-14T15:37:55.762+0800"
     },
     "create_at":{
       "$date":"2022-07-29T16:00:20.953+0800"
@@ -33,11 +33,11 @@
     "_id":{
       "$oid":"62da56591f5a9496cdb1e9eb"
     },
-    "path":"/api/v1/users/list",
+    "path":"/api/v1/system/users/list",
     "group":"users",
     "method":"GET",
     "update_at":{
-      "$date":"2022-07-29T16:00:29.251+0800"
+      "$date":"2023-09-14T15:38:07.490+0800"
     },
     "create_at":{
       "$date":"2022-07-29T16:00:29.251+0800"
@@ -48,11 +48,11 @@
     "_id":{
       "$oid":"62da56941f5a9496cdb1e9ee"
     },
-    "path":"/api/v1/users/add",
+    "path":"/api/v1/system/users/add",
     "group":"users",
     "method":"POST",
     "update_at":{
-      "$date":"2022-07-29T16:00:13.100+0800"
+      "$date":"2023-09-14T15:38:16.964+0800"
     },
     "create_at":{
       "$date":"2022-07-29T16:00:13.100+0800"
@@ -63,11 +63,11 @@
     "_id":{
       "$oid":"62da56bb1f5a9496cdb1e9f3"
     },
-    "path":"/api/v1/users/edit",
+    "path":"/api/v1/system/users/edit",
     "group":"users",
     "method":"PUT",
     "update_at":{
-      "$date":"2022-07-29T16:00:23.480+0800"
+      "$date":"2023-09-14T15:38:30.282+0800"
     },
     "create_at":{
       "$date":"2022-07-29T16:00:23.480+0800"
@@ -78,11 +78,11 @@
     "_id":{
       "$oid":"62da56db1f5a9496cdb1e9f6"
     },
-    "path":"/api/v1/users/delete",
+    "path":"/api/v1/system/users/delete",
     "group":"users",
     "method":"DELETE",
     "update_at":{
-      "$date":"2022-07-29T16:00:33.614+0800"
+      "$date":"2023-09-14T15:38:40.088+0800"
     },
     "create_at":{
       "$date":"2022-07-29T16:00:33.614+0800"
