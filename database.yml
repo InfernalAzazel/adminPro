@@ -1,0 +1,21 @@
+version: '3.9'
+services:
+  # 数据库
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    hostname: mongo
+    restart: always
+    volumes:
+      - mongo_conf:/data/configdb
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: spb0122003
+      MONGO_INITDB_ROOT_PASSWORD: dcaGRzkJpuKsHgMs8hoS
+    ports:
+      - "27017:27017"
+volumes:
+  mongo_data:
+    name: mongo_data
+  mongo_conf:
+    name: mongo_conf

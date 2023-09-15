@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+  # 运维管理端
+  portainer:
+    image: portainer/portainer-ce
+    container_name: portainer
+    hostname: portainer
+    restart: always
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer:/data
+    ports:
+      - "1000:9000"
+volumes:
+  portainer:
+    name: portainer
