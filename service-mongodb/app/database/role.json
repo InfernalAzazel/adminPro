@@ -16,36 +16,35 @@
       "62da570d1f5a9496cdb1e9f9",
       "62da57401f5a9496cdb1e9fc",
       "62da57681f5a9496cdb1e9ff",
+      "62da56bb1f5a9496cdb1e9f3",
+      "62da56941f5a9496cdb1e9ee",
+      "62da56591f5a9496cdb1e9eb",
+      "62da56201f5a9496cdb1e9e8",
+      "62cd16f41db5004e1234d3d8",
+      "62e7a96b0ba96e5f3f972ee2",
+      "62e7a91d0ba96e5f3f972edf",
+      "62e7a8be0ba96e5f3f972eda",
+      "62e7a87e0ba96e5f3f972ed7",
+      "62e7a8050ba96e5f3f972ecc",
+      "62e109ac342afd0070930ec1",
+      "62da587d1f5a9496cdb1ea19",
+      "62da58601f5a9496cdb1ea15",
       "62da57a61f5a9496cdb1ea04",
       "62da57d21f5a9496cdb1ea09",
       "62da57fc1f5a9496cdb1ea0c",
       "62da58481f5a9496cdb1ea12",
-      "62da587d1f5a9496cdb1ea19",
-      "62e109ac342afd0070930ec1",
-      "62e7a8050ba96e5f3f972ecc",
-      "62e7a87e0ba96e5f3f972ed7",
-      "62e7a8be0ba96e5f3f972eda",
-      "62e7a91d0ba96e5f3f972edf",
-      "62e7a96b0ba96e5f3f972ee2",
-      "62cd16f41db5004e1234d3d8",
-      "62da56201f5a9496cdb1e9e8",
-      "62da56591f5a9496cdb1e9eb",
-      "62da58601f5a9496cdb1ea15",
-      "62da56941f5a9496cdb1e9ee",
-      "62da56bb1f5a9496cdb1e9f3",
       "62da56db1f5a9496cdb1e9f6"
     ],
     "menu_permission":[
       "62c79bef76a04c01fd6d6561",
-      "62c79bef76a04c01fd6d6563",
       "62da5a0bdc655c5c2b15238c",
       "62c79bef76a04c01fd6d6565",
+      "62c79bef76a04c01fd6d6563",
       "62c79bef76a04c01fd6d6564",
-      "62da5ad3dc655c5c2b1523d4",
-      "62da5c6ddc655c5c2b15246c"
+      "62da5ad3dc655c5c2b1523d4"
     ],
     "update_at":{
-      "$date":"2023-09-15T15:29:21.246+0800"
+      "$date":"2023-11-10T17:25:35.790+0800"
     },
     "name":"测试角色"
   }

@@ -50,11 +50,12 @@ async def routers(
     try:
         data = [Menu(**x).model_dump() async for x in cursor]
     except Exception as _:
+        print(_)
         data = []
 
     # 拼接菜单路由
     menu_permission = list_to_tree(jsonable_encoder(data), 0, is_add_redirect=True)
-    return ResponseMessages(data=menu_permission)
+    return ResponseMessages(data=data)
 
 
 @router.get('/v1/system/users/list')

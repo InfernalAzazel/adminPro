@@ -62,7 +62,7 @@ declare namespace API {
 
     type Menu = {
         uid: string
-        title: string
+        name: string
         path: string
         order: number
         key: number

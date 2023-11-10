@@ -27,10 +27,10 @@ export default function InterfacePage() {
         pageSize: 10,
         total: 0,
     });
-    const {data, loading, run, refresh} = useInterfaceList()
-    const {run: runReqInterfaceAdd} = useInterfaceAdd({manual:true})
-    const {run: runReqInterfaceEdit} = useInterfaceEdit({manual:true})
-    const {run: runReqInterfaceDelete} = useInterfaceDelete({manual:true})
+    const {data, loading, runAsync, refresh} = useInterfaceList()
+    const { runAsync: runReqInterfaceAdd} = useInterfaceAdd({manual:true})
+    const {runAsync: runReqInterfaceEdit} = useInterfaceEdit({manual:true})
+    const {runAsync: runReqInterfaceDelete} = useInterfaceDelete({manual:true})
 
     useEffect(() => {
         setInterfaceList(data?.data);
@@ -196,9 +196,9 @@ export default function InterfacePage() {
 
     async function onSubmitCreateOREditFrom(value: API.Interface) {
         if(isCreateForm){
-            runReqInterfaceAdd(value)
+            await runReqInterfaceAdd(value)
         }else {
-            runReqInterfaceEdit(value)
+            await runReqInterfaceEdit(value)
         }
         setFormModalOpen(false);
         refresh()
@@ -208,8 +208,8 @@ export default function InterfacePage() {
         setCurrentRow(row)
         setDescriptionsModalOpen(true);
     }
-    function onDelete(row: API.Interface) {
-        runReqInterfaceDelete(row.uid)
+    async function onDelete(row: API.Interface) {
+        await runReqInterfaceDelete(row.uid)
         refresh()
         actionRef.current?.reload()
     }
@@ -231,8 +231,8 @@ export default function InterfacePage() {
                 actionRef={actionRef}
                 cardBordered
                 loading={loading}
-                request={(params) => {
-                    run(params)
+                request={async (params) => {
+                    await runAsync(params)
                     return Promise.resolve({
                         data: [],
                         success: true,

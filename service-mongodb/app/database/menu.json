@@ -1,57 +1,37 @@
 [
   {
     "_id":{
-      "$oid":"62da5c6ddc655c5c2b15246c"
-    },
-    "key":9,
-    "component":"views/system/syslog/index.vue",
-    "father":5,
-    "icon":"Tickets",
-    "order":5,
-    "path":"/system/syslog",
-    "update_at":{
-      "$date":"2022-08-01T17:51:13.049+0800"
-    },
-    "create_at":{
-      "$date":"2022-07-29T15:58:09.225+0800"
-    },
-    "title":"日志"
-  },
-  {
-    "_id":{
       "$oid":"62da5ad3dc655c5c2b1523d4"
     },
     "key":8,
-    "component":"views/system/interface/index.vue",
     "father":5,
-    "icon":"Cherry",
+    "icon":"ant-design:usb-filled",
     "order":4,
     "path":"/admin/system/interface",
     "update_at":{
-      "$date":"2022-07-29T15:58:06.096+0800"
+      "$date":"2023-11-09T15:59:40.543+0800"
     },
     "create_at":{
       "$date":"2022-07-29T15:58:06.096+0800"
     },
-    "title":"接口"
+    "name":"接口"
   },
   {
     "_id":{
       "$oid":"62da5a0bdc655c5c2b15238c"
     },
     "key":4,
-    "component":"views/system/users/index.vue",
     "father":5,
-    "icon":"User",
+    "icon":"ant-design:user-outlined",
     "order":1,
     "path":"/admin/system/users",
     "update_at":{
-      "$date":"2022-07-29T15:57:55.333+0800"
+      "$date":"2023-11-09T15:58:42.403+0800"
     },
     "create_at":{
       "$date":"2022-07-29T15:57:55.333+0800"
     },
-    "title":"用户"
+    "name":"用户"
   },
   {
     "_id":{
@@ -60,16 +40,15 @@
     "key":7,
     "father":5,
     "path":"/admin/system/role",
-    "icon":"Bicycle",
-    "component":"views/system/role/index.vue",
+    "icon":"ant-design:idcard-filled",
     "order":2,
     "update_at":{
-      "$date":"2022-07-29T15:57:58.079+0800"
+      "$date":"2023-11-09T15:58:58.103+0800"
     },
     "create_at":{
       "$date":"2022-07-29T15:57:58.079+0800"
     },
-    "title":"角色"
+    "name":"角色"
   },
   {
     "_id":{
@@ -78,16 +57,15 @@
     "key":6,
     "father":5,
     "path":"/admin/system/menu",
-    "icon":"CreditCard",
-    "component":"views/system/menu/index.vue",
+    "icon":"ant-design:menu-outlined",
     "order":3,
     "update_at":{
-      "$date":"2022-07-29T15:58:02.811+0800"
+      "$date":"2023-11-09T15:59:12.950+0800"
     },
     "create_at":{
       "$date":"2022-07-29T15:58:02.811+0800"
     },
-    "title":"菜单"
+    "name":"菜单"
   },
   {
     "_id":{
@@ -96,16 +74,15 @@
     "key":5,
     "father":0,
     "path":"/admin/system",
-    "icon":"Setting",
-    "component":"layout/base.vue",
+    "icon":"ant-design:crown-filled",
     "order":4,
     "update_at":{
-      "$date":"2022-07-29T15:57:52.501+0800"
+      "$date":"2023-11-09T15:58:12.169+0800"
     },
     "create_at":{
       "$date":"2022-07-29T15:57:52.501+0800"
     },
-    "title":"系统"
+    "name":"系统"
   },
   {
     "_id":{
@@ -113,16 +90,15 @@
     },
     "key":3,
     "father":0,
-    "path":"/admin",
-    "component":"layout/base.vue",
-    "icon":"House",
+    "path":"/admin/welcome",
+    "icon":"ant-design:home-filled",
     "order":3,
     "update_at":{
-      "$date":"2022-07-29T15:57:49.686+0800"
+      "$date":"2023-11-09T15:57:02.587+0800"
     },
     "create_at":{
       "$date":"2022-07-29T15:57:49.686+0800"
     },
-    "title":"首页"
+    "name":"首页"
   }
 ]

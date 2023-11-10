@@ -57,13 +57,13 @@ export default function RolePage() {
     const [interfaceDataAllKeys, setInterfaceDataAllKeys] =  useState<React.Key[]>([]);
     const [interfaceCheckedKeys, setInterfaceCheckedKeys] =  useState<React.Key[]>([]);
 
-    const {data, loading, run} = useRoleList()
-    const {run: runReqRoleAdd} = useRoleAdd({manual: true})
-    const {run: runReqRoleEdit} = useRoleEdit({manual: true})
-    const {run: runReqRoleDelete} = useRoleDelete({manual: true})
-    const {data: dataReqMenuAll, run: runReqMenuAll} = useMenuAll({manual: true})
-    const {data: dataReqMenuPermissionsAll, run: runReqMenuPermissionsAll} = useMenuAll({manual: true})
-    const {data: dataReqInterfaceAll, run: runReqInterfaceAll} = useInterfaceAll({manual: true})
+    const {data, loading, runAsync} = useRoleList()
+    const {runAsync: runReqRoleAdd} = useRoleAdd({manual: true})
+    const {runAsync: runReqRoleEdit} = useRoleEdit({manual: true})
+    const {runAsync: runReqRoleDelete} = useRoleDelete({manual: true})
+    const {data: dataReqMenuAll, runAsync: runReqMenuAll} = useMenuAll({manual: true})
+    const {data: dataReqMenuPermissionsAll, runAsync: runReqMenuPermissionsAll} = useMenuAll({manual: true})
+    const {data: dataReqInterfaceAll, runAsync: runReqInterfaceAll} = useInterfaceAll({manual: true})
 
     useEffect(() => {
         setRoleList(data?.data);
@@ -217,11 +217,11 @@ export default function RolePage() {
         setFormModalOpen(true);
     }
 
-    async function onSubmitCreateOREditFrom(value: API.Role) {
+    async function onSubmitCreateOREditFrom (value: API.Role) {
         if (isCreateForm) {
-            runReqRoleAdd(value)
+            await runReqRoleAdd(value)
         } else {
-            runReqRoleEdit(value)
+            await runReqRoleEdit(value)
         }
         setFormModalOpen(false);
         actionRef.current?.reload()
@@ -232,8 +232,8 @@ export default function RolePage() {
         setDescriptionsModalOpen(true);
     }
 
-    function onDelete(row: API.Role) {
-        runReqRoleDelete(row.name)
+    async function onDelete(row: API.Role) {
+        await runReqRoleDelete(row.name)
         actionRef.current?.reload()
     }
 
@@ -249,10 +249,10 @@ export default function RolePage() {
         setCurrentRow(undefined)
     }
 
-    function openPermissionsModal(row: API.Role) {
-        runReqMenuAll()
-        runReqMenuPermissionsAll(row.menu_permission)
-        runReqInterfaceAll()
+    async function openPermissionsModal(row: API.Role) {
+        await runReqMenuAll()
+        await runReqMenuPermissionsAll(row.menu_permission)
+        await runReqInterfaceAll()
 
         setInterfaceCheckedKeys(row.interface_permission)
         setCurrentRow(row)
@@ -260,10 +260,10 @@ export default function RolePage() {
         actionRef.current?.reload();
     }
 
-    function onPermissionsOk () {
+    async function onPermissionsOk () {
         setPermissionsModalOpen(false);
         if(currentRow){
-            runReqRoleEdit(currentRow)
+            await runReqRoleEdit(currentRow)
         }
         actionRef.current?.reload();
     }
@@ -353,8 +353,8 @@ export default function RolePage() {
                 actionRef={actionRef}
                 cardBordered
                 loading={loading}
-                request={(params) => {
-                    run(params)
+                request={async (params) => {
+                    await runAsync(params)
                     return Promise.resolve({
                         data: [],
                         success: true,
@@ -407,7 +407,7 @@ export default function RolePage() {
                             <div style={{height: 360}}>
                                 <Tree
                                     checkable
-                                    fieldNames={{key: 'uid'}}
+                                    fieldNames={{key: 'uid', title: 'name'}}
                                     checkedKeys={menuCheckedKeys}
                                     onCheck={onMenuCheck}
                                     treeData={menuTreeData}

@@ -27,10 +27,10 @@ export default function MenuPage() {
         pageSize: 10,
         total: 0,
     });
-    const {data, loading, run} = useMenuList()
-    const {run: runReqMenuAdd} = useMenuAdd({manual:true})
-    const {run: runReqMenuEdit} = useMenuEdit({manual:true})
-    const {run: runReqMenuDelete} = useMenuDelete({manual:true})
+    const {data, loading, runAsync} = useMenuList()
+    const {runAsync: runReqMenuAdd} = useMenuAdd({manual:true})
+    const {runAsync: runReqMenuEdit} = useMenuEdit({manual:true})
+    const {runAsync: runReqMenuDelete} = useMenuDelete({manual:true})
 
     useEffect(() => {
         const {treeData} = getTreeDataAndHalfCheckedKeys(data?.data || [])
@@ -66,8 +66,8 @@ export default function MenuPage() {
             ellipsis: true,
         },
         {
-            title: 'title',
-            dataIndex: 'title',
+            title: 'name',
+            dataIndex: 'name',
             copyable: true,
             ellipsis: true,
             formItemProps: {
@@ -207,9 +207,9 @@ export default function MenuPage() {
 
     async function onSubmitCreateOREditFrom(value: API.Menu) {
         if(isCreateForm){
-            runReqMenuAdd(value)
+            await runReqMenuAdd(value)
         }else {
-            runReqMenuEdit(value)
+            await runReqMenuEdit(value)
         }
         setFormModalOpen(false);
         actionRef.current?.reload()
@@ -218,8 +218,8 @@ export default function MenuPage() {
         setCurrentRow(row)
         setDescriptionsModalOpen(true);
     }
-    function onDelete(row: API.Menu) {
-        runReqMenuDelete(row.uid)
+    async function onDelete(row: API.Menu) {
+        await runReqMenuDelete(row.uid)
         actionRef.current?.reload()
     }
 
@@ -240,8 +240,8 @@ export default function MenuPage() {
                 actionRef={actionRef}
                 cardBordered
                 loading={loading}
-                request={(params) => {
-                    run(params)
+                request={async (params) => {
+                    await runAsync(params)
                     return Promise.resolve({
                         data: [],
                         success: true,

@@ -19,6 +19,9 @@ export function useUsersRoutes(options?:  Options<any, any>){
         return await axiosInstance.get('/api/v1/system/users/routes') as ResData<API.Router>
     },options)
 }
+export async function getUsersRoutes(){
+    return await axiosInstance.get('/api/v1/system/users/routes') as ResData<API.Router>
+}
 // --- 菜单 ---
 export function useMenuAll(options?:  Options<any, any>){
     return useRequest(async (uids?: string[]) => {

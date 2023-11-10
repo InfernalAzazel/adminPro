@@ -8,9 +8,8 @@ class SearchMenu(BaseModel):
     key: int | None = None
     father: int | None = None
     path: str | None = None
-    title: str | None = None
+    name: str | None = None
     icon: str | None = None
-    component: str | None = None
     order: int | None = None
 
 

@@ -31,12 +31,12 @@ export default function UsersPage() {
     const [roleDataAll, setRoleDataAll] = useState<API.Role[]>([]);
 
 
-    const {data, loading, run, refresh} = useUsersList()
-    const {run: runReqUsersAdd} = useUsersAdd({manual:true})
-    const {run: runReqUsersEdit} = useUsersEdit({manual:true})
-    const {run: runReqUsersDelete} = useUsersDelete({manual:true})
+    const {data, loading, runAsync, refresh} = useUsersList()
+    const {runAsync: runReqUsersAdd} = useUsersAdd({manual:true})
+    const {runAsync: runReqUsersEdit} = useUsersEdit({manual:true})
+    const {runAsync: runReqUsersDelete} = useUsersDelete({manual:true})
 
-    const {data: dataReqRoleAll, run: runReqRoleAll} = useRoleAll({manual: true})
+    const {data: dataReqRoleAll, runAsync: runReqRoleAll} = useRoleAll({manual: true})
 
 
     useEffect(() => {
@@ -51,6 +51,7 @@ export default function UsersPage() {
 
     useEffect(() => {
         setRoleDataAll(dataReqRoleAll?.data);
+        console.log(dataReqRoleAll?.data)
     }, [dataReqRoleAll]);
 
     useEffect(() => {
@@ -261,7 +262,7 @@ export default function UsersPage() {
     }, [isCreateForm, createSchemaColumns, schemaColumns]);
 
 
-    function openCreateOREditModal(row?: API.User, isCreate: boolean = true) {
+    async function openCreateOREditModal(row?: API.User, isCreate: boolean = true) {
         actionRef.current?.reload();
         if(isCreate){
             setIsCreateForm(true)
@@ -269,16 +270,16 @@ export default function UsersPage() {
         }else {
             setIsCreateForm(false);
             setCurrentRow(row)
-            runReqRoleAll()
         }
+         await runReqRoleAll()
         setFormModalOpen(true);
     }
 
     async function onSubmitCreateOREditFrom(value: API.CreateUser | API.User) {
         if(isCreateForm){
-            runReqUsersAdd(value as API.CreateUser)
+            await runReqUsersAdd(value as API.CreateUser)
         }else {
-            runReqUsersEdit(value as API.User)
+            await runReqUsersEdit(value as API.User)
         }
         setFormModalOpen(false);
         actionRef.current?.reload()
@@ -288,8 +289,8 @@ export default function UsersPage() {
         setCurrentRow(row)
         setDescriptionsModalOpen(true);
     }
-    function onDelete(row: API.User) {
-        runReqUsersDelete(row.uid)
+    async function onDelete(row: API.User) {
+        await runReqUsersDelete(row.uid)
         refresh()
         actionRef.current?.reload()
     }
@@ -311,8 +312,8 @@ export default function UsersPage() {
                 actionRef={actionRef}
                 cardBordered
                 loading={loading}
-                request={(params) => {
-                    run(params)
+                request={ async (params) => {
+                    await runAsync(params)
                     return Promise.resolve({
                         data: [],
                         success: true,
