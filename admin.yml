@@ -1,0 +1,24 @@
+version: '3.9'
+services:
+  admin:
+    image: admin
+    build:
+      context: .
+      dockerfile: back-py-mongo/Dockerfile
+    container_name: admin
+    hostname: admin
+    restart: always
+    volumes:
+      - admin:/code
+    environment:
+      TZ_INFO: ${TZ_INFO}
+      MONGODB_HOST: ${MONGODB_HOST}
+      MONGODB_USERNAME: ${MONGODB_USERNAME}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_ALGORITHM: ${JWT_ALGORITHM}
+      JWT_MINUTES: ${JWT_MINUTES}
+    ports:
+      - "27017:27017"
+volumes:
+  admin:
