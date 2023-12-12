@@ -14,6 +14,7 @@ class StatusCode:
     not_found: int = 404
     jwt_expired: int = 419
     jwt_decode_failed: int = 422
+    illegal_login: int = 423
     username_password_error: int = 460
     user_disabled: int = 480
     get_roles_failed: int = 490

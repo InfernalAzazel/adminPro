@@ -62,6 +62,9 @@ async def routers(
     coll = db_engine[MenuResponseModel.Config.name]
     cursor = coll.find(query)
     data = [MenuResponseModel(**x).model_dump() async for x in cursor]
+    # 没有分配菜单权限非法登录
+    if not data:
+        return ResponseMessages(locale=language, status_code=StatusCode.illegal_login)
     return ResponseMessages(locale=language, data=data)
 
 

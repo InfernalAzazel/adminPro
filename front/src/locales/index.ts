@@ -23,9 +23,7 @@ i18n
         interpolation: {
             escapeValue: false // React 已经对 XSS 安全了
         }
-    })
-    .then(() => console.log('i18next has been initialized!'))
-    .catch((error) => console.error('Error initializing i18next: ', error));
+    }).catch((error) => console.error('Error initializing i18next: ', error));
 
 export function getLocale(locale: string): Locale{
     const language:Record<string, Locale>={

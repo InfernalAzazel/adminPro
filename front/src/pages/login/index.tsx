@@ -39,7 +39,6 @@ export default function LoginPage() {
 
     async function onSubmit(values: any) {
         setIsAutoComplete(values?.autoLogin || false)
-        console.log('loginRequest', values)
         await loginRequest(values)
     }
 

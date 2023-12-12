@@ -58,7 +58,6 @@ export default function UsersPage() {
 
     useEffect(() => {
         setRoleDataAll(dataRoleAll?.data);
-        console.log(dataRoleAll?.data)
     }, [dataRoleAll]);
 
     useEffect(() => {

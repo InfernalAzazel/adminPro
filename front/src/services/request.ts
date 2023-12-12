@@ -9,19 +9,13 @@ const axiosInstance = axios.create({});
 
 
 axiosInstance.interceptors.request.use((config) => {
-
     const state = useAppStore.getState() as any
-
-    if (state.access_token) {
-        config.headers = Object.assign(config.headers || {}, {
-            ['Authorization']: `Bearer ${state.access_token}`,
-        })
-    }
-    if (state.locale) {
-        config.headers = Object.assign(config.headers || {}, {
-            ['Customize-Language']: `${state.locale}`,
-        })
-    }
+    config.headers = Object.assign(config.headers || {}, {
+        // 如果 access_token 存在，则设置 Authorization 头部
+        ...(state.access_token ? { 'Authorization': `Bearer ${state.access_token}` } : {}),
+        // 如果locale存在，则设置 Customize-Language 头部
+        ...(state.locale ? { 'Customize-Language': state.locale} : {}),
+    })
     return config;
 });
 
@@ -31,6 +25,7 @@ axiosInstance.interceptors.response.use(
     (response) => {
         // 处理成功响应
         const data: PagesData<any> = response.data
+        const state = useAppStore.getState() as any
         if(data.success){
             if(data.status_code !== 200){
                 notification.info({
@@ -40,9 +35,12 @@ axiosInstance.interceptors.response.use(
                 })
             }
         }else {
-            if(data.status_code === 419){
-                const state = useAppStore.getState() as any
-                state.setAccessToken('')
+            // 定义一个数组，包含导致访问令牌失效的HTTP状态码
+            const resetTokenStatusCodes = [419, 423, 480];
+            // JWT过期 用户被禁用
+            // 检查返回的状态码是否需要重置访问令牌
+            if (resetTokenStatusCodes.includes(data.status_code)) {
+                state.setAccessToken('');
             }
             notification.error({
                 message: i18n.t('multipurpose.error'),

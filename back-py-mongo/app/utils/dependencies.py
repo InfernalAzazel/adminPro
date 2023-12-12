@@ -80,5 +80,8 @@ async def auto_current_user_permission(
     if e.enforce(role_model.uid, path, method):
         pass
     else:
+        # 非法登录
+        if path == '/api/v1/system/users/routes':
+            raise ExceptionResponse(locale=language, status_code=StatusCode.illegal_login)
         raise ExceptionResponse(locale=language, status_code=StatusCode.unauthorized)
     return current_user

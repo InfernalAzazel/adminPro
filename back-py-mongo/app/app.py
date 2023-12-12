@@ -6,6 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from app.api.system import users, menu, role, interface
 from app.routers import auth, init
 from app.utils.custom_response import ExceptionResponse, ResponseMessages, StatusCode
+from app.utils.dependencies import get_language
 
 app = FastAPI(
     title="adminPro",
@@ -16,17 +17,15 @@ app = FastAPI(
 
 @app.exception_handler(ExceptionResponse)
 async def http_exception_handler(request: Request, exc: ExceptionResponse):
-    """如何异常 """
-    return ResponseMessages(locale=exc.locale, status_code=exc.status_code, success=False, detail=str(exc.detail))
+    """HTTP 异常处理程序 """
+    return ResponseMessages(locale=exc.locale, status_code=exc.status_code, success=False, detail=exc.detail)
 
 
 @app.exception_handler(RequestValidationError)
-async def validation_exception_handler(request, exc):
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
     """422 客户端输入数据验证异常"""
-    return JSONResponse(
-        status_code=200,
-        content=ResponseMessages(locale=exc.locale, status_code=StatusCode.bad_request, success=False, detail=str(exc)),
-    )
+    language: str = get_language(request)
+    return ResponseMessages(locale=language, status_code=StatusCode.bad_request, success=False, detail=str(exc))
 
 app.include_router(init.router)
 app.include_router(auth.router)
