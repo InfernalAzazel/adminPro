@@ -10,17 +10,22 @@ import {Layout, Space, theme} from 'antd';
 import type {CSSProperties} from 'react';
 import {useEffect, useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {useLoginRequest} from '@/services';
+import {useLoginRequest, useStateInitRequest} from '@/services';
 import {useAppStore} from "@/store";
 import { useTranslation } from 'react-i18next';
 
 export default function LoginPage() {
     const {data, runAsync: loginRequest} = useLoginRequest({manual: true})
+    const {run: runStateInitRequest} =  useStateInitRequest({manual: true})
     const navigate = useNavigate();
     const setAccessToken = useAppStore((state: any) => state.setAccessToken);
     const {token} = theme.useToken();
     const { t } = useTranslation();
-    const [isAutoComplete, setIsAutoComplete] =useState(false)
+    const [isAutoComplete, setIsAutoComplete] = useState(false)
+
+    useEffect(() => {
+        runStateInitRequest()
+    }, []);
 
     useEffect(() => {
         if (data && data.access_token) {

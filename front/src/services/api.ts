@@ -3,6 +3,13 @@ import { API,  ResData, PagesData, ResCode} from './typings'
 import { useRequest } from 'ahooks';
 import {Options} from "ahooks/lib/useRequest/src/types";
 import  qs from "qs";
+
+export function useStateInitRequest(options?:  Options<any, any>){
+    return useRequest(async () => {
+        return await axiosInstance.get('/api/v1/state/init') as ResData<API.Router>
+    },options)
+}
+
 export function useLoginRequest(options?:  Options<any, any>) {
     return useRequest(async (from: API.LoginForm) => {
         const sp = new URLSearchParams(from)
