@@ -46,14 +46,20 @@ async def routers(
 ):
     # 角色
     coll = db_engine[RoleResponseModel.Config.name]
-    doc = await coll.find_one({'name': current_user.role_name})
-    if not doc:
-        ResponseMessages(locale=language, status_code=StatusCode.role_get_failed)
+    cursor = coll.find({'name': {'$in': current_user.role_name}})
+    menu_permission = []
+    # 添加多个角色菜单权限
+    async for x in cursor:
+        role_model = RoleResponseModel(**x)
+        menu_permission.extend(role_model.menu_permission)
 
-    role_model = RoleResponseModel(**doc)
+    if not menu_permission:
+        ResponseMessages(locale=language, status_code=StatusCode.role_get_failed)
+    # 去重
+    menu_permission = list(set(menu_permission))
 
     try:
-        obj_uids = [ObjectId(uid) for uid in role_model.menu_permission]
+        obj_uids = [ObjectId(uid) for uid in menu_permission]
     except bson.errors.InvalidId:
         return ResponseMessages(locale=language, status_code=StatusCode.not_valid_object_id)
 

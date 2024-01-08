@@ -84,6 +84,8 @@ async def add(
 ):
     coll = db_engine[role_add_model.Config.name]
     count = await coll.count_documents({'name': role_add_model.name})
+    role_add_model.menu_permission = []
+    role_add_model.interface_permission = []
     data = role_add_model.model_dump()
     data['create_at'] = datetime.now(timezone.utc)
     if count > 0:
@@ -109,7 +111,7 @@ async def edit(
         return ResponseMessages(locale=language, status_code=StatusCode.not_valid_object_id)
 
     coll = db_engine[role_edit_model.Config.name]
-    data = role_edit_model.model_dump()
+    data = role_edit_model.model_dump(exclude_none=True)
     data['update_at'] = datetime.utcnow()
     # 修改角色并且返回修改前的文档
     result = await coll.find_one_and_update(
@@ -119,12 +121,13 @@ async def edit(
     if result is None or not result:
         return ResponseMessages(locale=language, status_code=StatusCode.role_modify_failed)
     old_role_model = RoleResponseModel(**result)
-    print('old_role_model', old_role_model.model_dump())
+
     # 更新用户的角色名称 #
     coll = db_engine[UserResponseModel.Config.name]
     await coll.update_many(
         {'role_name': old_role_model.name},
-        {'$set': {'role_name': role_edit_model.name}},
+        {"$set": {"role_name.$[elem]": role_edit_model.name}},
+        array_filters=[{"elem": old_role_model.name}]
     )
 
     return ResponseMessages(locale=language, status_code=StatusCode.role_modify_successfully, success=True)
@@ -146,14 +149,10 @@ async def delete(
     # 用户的角色名称加入提示 并且 禁用用户使用不存在的该角色
     # 注: 角色被删除 用来标识被删除的角色
     coll = db_engine[UserResponseModel.Config.name]
-    data = {
-        'role_name': '角色被删除',
-        'disabled': True
-    }
 
     await coll.update_many(
-        {'role_name': name},
-        {'$set': data},
+        {"role_name": name},
+        {"$pull": {"role_name": name}},
     )
 
     return ResponseMessages(locale=language, status_code=StatusCode.role_delete_successfully, success=True)

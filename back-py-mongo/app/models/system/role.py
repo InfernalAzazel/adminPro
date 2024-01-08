@@ -6,8 +6,8 @@ from app.models.base import AttachResponseModel, AttachQueryParamsModel
 class RoleAddOREditModel(BaseModel):
     name: str | None = Field(None)
     describe: str | None = Field(None)
-    menu_permission: List[str] | None = Field([])
-    interface_permission: List[str] | None = Field([])
+    menu_permission: List[str] | None = Field(None)
+    interface_permission: List[str] | None = Field(None)
 
     class Config:
         name = 'role'

@@ -141,6 +141,7 @@ export default function RolePage() {
         {
             title: t(`pages.system.role.describe`),
             dataIndex: 'describe',
+            valueType: 'textarea',
             copyable: true,
             ellipsis: true,
             formItemProps: {
@@ -208,7 +209,13 @@ export default function RolePage() {
             ...modifyColumn('update_at', {hideInForm: true}),
         };
     });
-
+    const descriptionsColumns: ProColumns<API.Role>[] = columns.map((column) => {
+        const modifyColumn = (key: string, modifications: Record<string, any>) =>
+            column.dataIndex === key ? {...column, ...modifications} : column;
+        return {
+            ...modifyColumn('describe', { ellipsis: false,}),
+        };
+    });
 
     function openCreateOREditModal(row?: API.Role, isCreate: boolean = true) {
         actionRef.current?.reload();
@@ -403,7 +410,7 @@ export default function RolePage() {
                     dataSource={currentRow}
                     bordered={true}
                     column={1}
-                    columns={columns as ProDescriptionsItemProps<API.Role>[]}
+                    columns={descriptionsColumns as ProDescriptionsItemProps<API.Role>[]}
                 />
             </Modal>
             <Modal width={800} title={t(`pages.system.role.setPermissions`)} open={isPermissionsModalOpen} onOk={onPermissionsOk} onCancel={onPermissionsCancel}>

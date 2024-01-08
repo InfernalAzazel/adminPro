@@ -50,14 +50,92 @@
     "name":"测试角色",
     "describe":"测试",
     "menu_permission":[
-      "62c79bef76a04c01fd6d6561"
+      "62c79bef76a04c01fd6d6561",
+      "62c79bef76a04c01fd6d6563",
+      "62c79bef76a04c01fd6d6565"
     ],
-    "interface_permission":[],
+    "interface_permission":[
+      "62cd16f41db5004e1234d3d8",
+      "62da56201f5a9496cdb1e9e8",
+      "62da56591f5a9496cdb1e9eb",
+      "62da587d1f5a9496cdb1ea19",
+      "62da58601f5a9496cdb1ea15",
+      "62da58481f5a9496cdb1ea12",
+      "62da57fc1f5a9496cdb1ea0c"
+    ],
     "create_at":{
       "$date":"2023-12-08T17:31:58.701+0800"
     },
     "update_at":{
-      "$date":"2023-12-11T13:50:27.203+0800"
+      "$date":"2024-01-08T11:29:56.320+0800"
+    }
+  },
+  {
+    "_id":{
+      "$oid":"659b6c68f4ec1491e16e15c6"
+    },
+    "name":"系统用户权限",
+    "describe":"系统用户权限",
+    "menu_permission":[
+      "62da5a0bdc655c5c2b15238c",
+      "62c79bef76a04c01fd6d6563"
+    ],
+    "interface_permission":[
+      "62da56591f5a9496cdb1e9eb",
+      "62da56941f5a9496cdb1e9ee",
+      "62da56bb1f5a9496cdb1e9f3",
+      "62da56db1f5a9496cdb1e9f6"
+    ],
+    "create_at":{
+      "$date":"2024-01-08T11:30:48.251+0800"
+    },
+    "update_at":{
+      "$date":"2024-01-08T13:48:54.906+0800"
+    }
+  },
+  {
+    "_id":{
+      "$oid":"659b6cb4f4ec1491e16e1609"
+    },
+    "name":"基本权限",
+    "describe":"基本权限",
+    "menu_permission":[
+      "62c79bef76a04c01fd6d6561"
+    ],
+    "interface_permission":[
+      "62cd16f41db5004e1234d3d8",
+      "62da56201f5a9496cdb1e9e8",
+      "62da56591f5a9496cdb1e9eb"
+    ],
+    "create_at":{
+      "$date":"2024-01-08T11:32:04.684+0800"
+    },
+    "update_at":{
+      "$date":"2024-01-08T11:32:27.109+0800"
+    }
+  },
+  {
+    "_id":{
+      "$oid":"659b8fac89c65b536652d87e"
+    },
+    "name":"系统菜单权限",
+    "describe":"权限管理在几乎每个系统中都是必备的模块。如果项目开发每次都要实现一次权限管理，无疑会浪费开发时间，增加开发成本。因此，casbin 库出现了。casbin 是一个强大、高效的访问控制库。支持常用的多种访问控制模型，如 ACL/RBAC/ABAC 等。可以实现灵活的访问权限控制。同时，casbin 支持多种编程语言，Go/Java/Node/PHP/Python/.NET/Rust。我们只需要一次学习，多处运用。",
+    "menu_permission":[
+      "62c79bef76a04c01fd6d6564",
+      "62c79bef76a04c01fd6d6563"
+    ],
+    "interface_permission":[
+      "62da570d1f5a9496cdb1e9f9",
+      "62da57401f5a9496cdb1e9fc",
+      "62da57681f5a9496cdb1e9ff",
+      "62da57a61f5a9496cdb1ea04",
+      "62da57d21f5a9496cdb1ea09"
+    ],
+    "create_at":{
+      "$date":"2024-01-08T14:01:16.935+0800"
+    },
+    "update_at":{
+      "$date":"2024-01-08T14:09:08.936+0800"
     }
   }
 ]

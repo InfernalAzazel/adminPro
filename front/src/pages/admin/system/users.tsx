@@ -8,7 +8,7 @@ import type {
     ProFormInstance
 } from '@ant-design/pro-components';
 import {BetaSchemaForm, ProDescriptions, ProTable} from '@ant-design/pro-components';
-import type {PaginationProps} from 'antd';
+import {PaginationProps, Space, Tag} from 'antd';
 import {Button, Modal, Popconfirm} from 'antd';
 import {useEffect, useMemo, useRef, useState} from "react";
 import {
@@ -117,6 +117,10 @@ export default function UsersPage() {
             copyable: true,
             ellipsis: true,
             valueType: 'select',
+            width: 200,
+            fieldProps:{
+                mode: "multiple"
+            },
             valueEnum: () => {
                 const roleData = roleDataAll || [];
                 return roleData?.reduce((enumObj: Record<string, any>, item: Record<string, any>) => {
@@ -138,56 +142,24 @@ export default function UsersPage() {
             dataIndex: 'name',
             copyable: true,
             ellipsis: true,
-            formItemProps: {
-                rules: [
-                    {
-                        required: true,
-                        message: t(`multipurpose.rules.required`),
-                    },
-                ],
-            }
         },
         {
             title: t(`pages.system.users.mail`),
             dataIndex: 'mail',
             copyable: true,
             ellipsis: true,
-            formItemProps: {
-                rules: [
-                    {
-                        required: true,
-                        message: t(`multipurpose.rules.required`),
-                    },
-                ],
-            }
         },
         {
             title: t(`pages.system.users.company`),
             dataIndex: 'company',
             copyable: true,
             ellipsis: true,
-            formItemProps: {
-                rules: [
-                    {
-                        required: true,
-                        message: t(`multipurpose.rules.required`),
-                    },
-                ],
-            }
         },
         {
             title: t(`pages.system.users.department`),
             dataIndex: 'department',
             copyable: true,
-            ellipsis: true,
-            formItemProps: {
-                rules: [
-                    {
-                        required: true,
-                        message: t(`multipurpose.rules.required`),
-                    },
-                ],
-            }
+            ellipsis: false,
         },
         {
             title: t(`multipurpose.create_at`),
@@ -244,6 +216,25 @@ export default function UsersPage() {
             ...modifyColumn('update_at', {hideInForm: true}),
         };
     });
+
+    const descriptionsColumns: ProColumns<API.User>[] = columns.map((column) => {
+        const modifyColumn = (key: string, modifications: Record<string, any>) =>
+            column.dataIndex === key ? {...column, ...modifications} : column;
+        return {
+            ...modifyColumn('role_name', {
+                render: (_: any, record: any) => (
+                    <Space>
+                        {record.role_name.map((value: any, index: number)  => (
+                            <Tag key={index}>
+                                {value}
+                            </Tag>
+                        ))}
+                    </Space>
+                ),
+            }),
+        };
+    });
+
     const createSchemaColumns: ProColumns<API.CreateUser>[] = [
         ...columns.filter(({ dataIndex }) =>
             ['username', 'disabled', 'role_name'].includes(dataIndex as string)
@@ -367,7 +358,7 @@ export default function UsersPage() {
                     dataSource={currentRow}
                     bordered={true}
                     column={1}
-                    columns={columns as ProDescriptionsItemProps<API.User>[]}
+                    columns={descriptionsColumns as ProDescriptionsItemProps<API.User>[]}
                 />
             </Modal>
         </>

@@ -52,32 +52,42 @@ async def auto_current_user_permission(
         request: Request,
         language: str = Depends(get_language),
         current_user: UserResponseModel = Depends(get_current_user)):
-
     path = request.url.path
     method = request.method
+
+    interface_permission = []
+    role_models = []
 
     if current_user.disabled:
         raise ExceptionResponse(locale=language, status_code=StatusCode.user_disabled)
 
     db_client = async_db_engine()
     coll = db_client[RoleResponseModel.Config.name]
-    role_doc = await coll.find_one({'name': current_user.role_name})
+    cursor = coll.find({'name': {'$in': current_user.role_name}})
+
+    # 添加多个角色接口权限
+    async for x in cursor:
+        role_model = RoleResponseModel(**x)
+        role_models.append(role_model)
+        interface_permission.extend(role_model.interface_permission)
 
     # 获取角色失败
-    if not role_doc:
+    if not interface_permission:
         raise ExceptionResponse(locale=language, status_code=StatusCode.get_roles_failed)
-    role_model = RoleResponseModel(**role_doc)
+    # 多角色接口权限 -> 去重
+    interface_permission = list(set(interface_permission))
     # 获取接口
     coll = db_client[InterfaceResponseModel.Config.name]
-    obj_uids = [ObjectId(uid) for uid in role_model.interface_permission]
+    obj_uids = [ObjectId(uid) for uid in interface_permission]
     cursor = coll.find({'_id': {'$in': obj_uids}})
     interface_models = [InterfaceResponseModel(**x) async for x in cursor]
 
     # 设置适配器
-    adapter = Adapter(role_model, interface_models)
+    adapter = Adapter(role_models, interface_models)
     e = casbin.Enforcer('rbac_model.conf', adapter)
-    # # 验证接口权限
-    if e.enforce(role_model.uid, path, method):
+    role_uids = ''.join([role_model.uid for role_model in role_models])
+    # 验证接口权限
+    if e.enforce(role_uids, path, method):
         pass
     else:
         # 非法登录

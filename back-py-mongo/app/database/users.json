@@ -16,7 +16,9 @@
     "update_at":{
       "$date":"2022-08-01T15:39:36.817+0800"
     },
-    "role_name":"超级管理员"
+    "role_name":[
+      "超级管理员"
+    ]
   },
   {
     "_id":{
@@ -24,14 +26,20 @@
     },
     "username":"111",
     "disabled":false,
-    "role_name":"测试角色",
-    "name":null,
-    "mail":null,
-    "company":null,
-    "department":null,
+    "role_name":[
+      "基本权限",
+      "系统用户权限"
+    ],
+    "name":"",
+    "mail":"",
+    "company":"",
+    "department":"",
     "password":"11111",
     "create_at":{
       "$date":"2023-12-11T10:43:49.870+0800"
+    },
+    "update_at":{
+      "$date":"2024-01-08T13:32:16.826+0800"
     }
   }
 ]

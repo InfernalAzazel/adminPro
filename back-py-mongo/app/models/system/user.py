@@ -5,7 +5,7 @@ from app.models.base import AttachQueryParamsModel, AttachResponseModel
 class UserEditModel(BaseModel):
     username: str | None = None  # 帐号： quid1111
     disabled: bool | None = None  # 禁用：True == 禁用
-    role_name: str | None = None  # 关联角色
+    role_name: list[str] | None = None  # 关联角色
     name: str | None = None  # 姓名:  张三
     mail: str | None = None  # 邮箱
     company: str | None = None  # 公司

@@ -22,7 +22,7 @@ English | [简体中文](./README-zh-CN.md)
 ## feature
 
 - Front-end and back-end internationalization, extract translation fields from source code, and load language packs on demand
-- With permission management
+- Having multi role permission management
 - Elegant and highly encapsulated antd ProComponents design
 - theme selection
 - MongoDB is a flexible, high-performance, non-relational database with strong query capabilities.

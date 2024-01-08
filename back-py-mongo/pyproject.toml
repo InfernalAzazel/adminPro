@@ -1,18 +1,18 @@
 [tool.poetry]
-name = "service-mongodb"
+name = "back-py-mongo"
 version = "0.1.0"
 description = ""
-authors = [""]
+authors = ["kylin <260987762@qq.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-uvicorn = {extras = ["standard"], version = "^0.24.0"}
+uvicorn = {extras = ["standard"], version = "^0.25.0"}
 python-multipart = "^0.0.6"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 casbin = "^1.21.0"
 motor = "^3.2.0"
-fastapi = "^0.104.1"
+fastapi = "^0.108.0"
 orjson = "^3.9.10"
 
 

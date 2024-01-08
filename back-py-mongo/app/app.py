@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.api.system import users, menu, role, interface
@@ -34,7 +33,7 @@ app.include_router(menu.router)
 app.include_router(role.router)
 app.include_router(interface.router)
 
-app.mount('/', StaticFiles(directory='app/static/dist', html=True), name='static')
+# app.mount('/', StaticFiles(directory='app/static/dist', html=True), name='static')
 
 
 @app.on_event('startup')

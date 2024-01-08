@@ -34,7 +34,7 @@ declare namespace API {
         uid: string
         username: string
         disabled: boolean
-        role_name: string
+        role_name: string[]
         name: string
         mail: string
         company: string
